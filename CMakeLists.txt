@@ -10,6 +10,6 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/src/GitSha1.cpp.in" "${CMAKE_CURRENT
 
 find_package(SFML 2.4 REQUIRED system window graphics)
 
-add_executable(Tertius ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp src/GitSHA1.cpp)
+add_executable(Tertius ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/GitSHA1.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/blueprint_layer.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/blueprint_renderer.cpp )
 target_link_libraries(Tertius ${EXECUTABLE_NAME} ${SFML_LIBRARIES})
 
