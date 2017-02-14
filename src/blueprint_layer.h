@@ -8,7 +8,7 @@
 #include <array>
 #include "point.h"
 
-template<int ORDER>class blueprint_layer:public sf::Drawable,public sf::Transformable{
+class blueprint_layer:public sf::Drawable,public sf::Transformable{
     protected:
     std::unique_ptr<sf::Texture> layer_texture;
     std::map<std::string,std::array<sf::Vector2f,4> > texture_mappings;
@@ -17,21 +17,31 @@ template<int ORDER>class blueprint_layer:public sf::Drawable,public sf::Transfor
     public:
     blueprint_layer();
     virtual ~blueprint_layer();
-    int render_order()const{return ORDER;}
-    virtual bool try_designate(point,int zlevel,const std::string&)=0;
+    virtual int render_order()const=0;
     virtual std::vector<std::string> get_available_actions()const=0;
+    void designate(point,int zlevel,const std::string& desig);
     protected:
+    virtual bool try_designate(point,int zlevel,const std::string&)=0;
+    virtual void rebuild()=0;
     void draw(sf::RenderTarget&,sf::RenderStates)const;
 };
 
-class designation_layer:public blueprint_layer<0>{
+class designation_layer:public blueprint_layer{
+  std::map<int,std::map<point,std::string> > filled;
     public:
         designation_layer();
         ~designation_layer();
-        int render_order()const;
-        bool try_designate(point,int zlevel,const std::string&);
         std::vector<std::string> get_available_actions()const;
-        
+      int render_order()const{return 0;} 
+    protected:
+        bool try_designate(point,int zlevel,const std::string&);
 };
-class building_layer:public blueprint_layer<1>{
+class building_layer:public blueprint_layer{
+  public:
+    building_layer();
+    ~building_layer();
+    int render_order()const{return 1;}
+    bool try_designate(point,int zlevel,const std::string&);
+    std::vector<std::string> get_available_actions()const;
+
 };

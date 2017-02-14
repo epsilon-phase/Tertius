@@ -1,4 +1,4 @@
 #pragma once
 #include <string>
 
-const std::string g_GIT_SHA1;
+extern const char g_GIT_SHA1[];
